@@ -2,32 +2,52 @@
 \RequirePackage{xkeyval}
 
 
-\let\easyfig@caption\@empty
-\let\easyfig@label\@empty
+\let\easyfig@caption\@gobble
+\let\easyfig@captionabove\@gobble
+\let\easyfig@placement\@empty
+
+\def\easyfig@label#1{%
+    \@ifundefined {easyfig@r@fig:#1}{%
+        \label{fig:#1}%
+        \global\@namedef{easyfig@r@fig:#1}{}%
+    }{}%
+}
 
 \define@key{easyfig}{caption}{%
-    \def\easyfig@caption{\caption{#1}}%
+    \def\easyfig@caption##1{\caption{#1}\easyfig@label{##1}}%
+    \let\easyfig@captionabove\@gobble
+}
+\define@key{easyfig}{captionabove}{%
+    \let\easyfig@caption\@gobble
+    \def\easyfig@captionabove##1{{%
+        \@tempdima=\abovecaptionskip
+        \abovecaptionskip=\belowcaptionskip
+        \belowcaptionskip=\@tempdima
+        \caption{#1}%
+        \easyfig@label{##1}%
+    }}%
 }
 \define@key{easyfig}{label}{%
-    \def\easyfig@label{\label{#1}}%
+    \def\easyfig@label##1{\label{#1}}%
+}
+\define@key{easyfig}{placement}{%
+    \def\easyfig@placement{[#1]}%
 }
 
 \newcommand{\Figure}[2][]{%
-    \begin{figure}%
+    \begingroup
     \setkeys*{easyfig}{#1}%
+    \def\@tempa{\begin{figure}}%
+    \expandafter\@tempa\easyfig@placement
+    \easyfig@captionabove{#2}%
     \def\@tempa{\begin{adjustbox}}%
     \expandafter\def\expandafter\@tempb\expandafter{\expandafter{\XKV@rm}}%
     \expandafter\@tempa\@tempb
         \includegraphics{#2}%
     \end{adjustbox}%
-    \easyfig@caption
-    \ifx\easyfig@caption\@empty\else
-        \ifx\easyfig@label\@empty
-            \label{fig:#2}%
-        \else
-            \easyfig@label
-        \fi
-    \fi
+    \easyfig@caption{#2}%
     \end{figure}%
+    \endgroup
 }
+
 
