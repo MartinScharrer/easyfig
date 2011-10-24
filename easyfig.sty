@@ -1,0 +1,33 @@
+\RequirePackage{adjustbox}
+\RequirePackage{xkeyval}
+
+
+\let\easyfig@caption\@empty
+\let\easyfig@label\@empty
+
+\define@key{easyfig}{caption}{%
+    \def\easyfig@caption{\caption{#1}}%
+}
+\define@key{easyfig}{label}{%
+    \def\easyfig@label{\label{#1}}%
+}
+
+\newcommand{\Figure}[2][]{%
+    \begin{figure}%
+    \setkeys*{easyfig}{#1}%
+    \def\@tempa{\begin{adjustbox}}%
+    \expandafter\def\expandafter\@tempb\expandafter{\expandafter{\XKV@rm}}%
+    \expandafter\@tempa\@tempb
+        \includegraphics{#2}%
+    \end{adjustbox}%
+    \easyfig@caption
+    \ifx\easyfig@caption\@empty\else
+        \ifx\easyfig@label\@empty
+            \label{fig:#2}%
+        \else
+            \easyfig@label
+        \fi
+    \fi
+    \end{figure}%
+}
+
