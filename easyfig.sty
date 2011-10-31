@@ -22,7 +22,7 @@
 \let\easyfig@default\@empty
 \let\easyfig@default@end\@empty
 \let\easyfig@shortcaption\@empty
-\def\easyfig@env{figure}
+\def\easyfig@env{{figure}}
 %    \end{macrocode}
 %
 % \begin{macro}{\easyfigdefault}
@@ -109,10 +109,10 @@
     \def\@tempb{true}%
     \ifx\@tempa\@tempb
         \endgroup
-        \def\easyfig@env{figure*}%
+        \def\easyfig@env{{figure*}}%
     \else
         \endgroup
-        \def\easyfig@env{figure}%
+        \def\easyfig@env{{figure}}%
     \fi
 }
 %    \end{macrocode}
@@ -123,7 +123,7 @@
 \newcommand{\Figure}{%
     \begingroup
     \@ifstar
-        {\def\easyfig@env{figure*}\@Figure}%
+        {\def\easyfig@env{{figure*}}\@Figure}%
         {\@Figure}%
 }
 %    \end{macrocode}
@@ -153,7 +153,7 @@
             \unexpanded{#1},%
             \easyfig@expandonce\easyfig@default@end
         }%
-        \noexpand\begin{\easyfig@env}%
+        \noexpand\begin\easyfig@env%
         \ifx\easyfig@placement\@empty\else
             [\easyfig@placement]%
         \fi
@@ -165,7 +165,7 @@
         \includegraphics{#2}%
     \end{adjustbox}%
     \easyfig@caption{#2}%
-    \end{\easyfig@env}%
+    \expandafter\end\easyfig@env%
     \endgroup
 }
 %    \end{macrocode}
@@ -185,7 +185,7 @@
     \expandafter\expandafter\expandafter\toks@
     \expandafter\expandafter\expandafter{\expandafter\the\expandafter\toks@\expandafter,\easyfig@default@end}%
     \expandafter\@tempa\expandafter{\the\toks@}
-    \def\@tempa{\begin{figure}}%
+    \edef\@tempa{\noexpand\begin{\easyfig@env}}%
     \expandafter\@tempa\easyfig@placement
     \easyfig@captionabove{#2}%
     \def\@tempa{\begin{adjustbox}}%
@@ -194,7 +194,7 @@
         \includegraphics{#2}%
     \end{adjustbox}%
     \easyfig@caption{#2}%
-    \end{figure}%
+    \expandafter\end\easyfig@env%
     \endgroup
 }
 %    \end{macrocode}
