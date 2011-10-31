@@ -13,11 +13,16 @@
 \RequirePackage{adjustbox}
 \RequirePackage{xkeyval}
 \RequirePackage{ifetex}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 \let\easyfig@caption\@gobble
 \let\easyfig@captionabove\@gobble
 \let\easyfig@placement\@empty
 \let\easyfig@default\@empty
 \let\easyfig@default@end\@empty
+\let\easyfig@shortcaption\@empty
+\def\easyfig@env{figure}
 %    \end{macrocode}
 %
 % \begin{macro}{\easyfigdefault}
@@ -27,8 +32,9 @@
         {\def\easyfig@default@end}%
         {\def\easyfig@default}%
 }
+\easyfigdefault*{center}
 %    \end{macrocode}
-% end{macro}
+% \end{macro}
 %
 %
 % \begin{macro}{\easyfig@label}
@@ -46,8 +52,17 @@
 % \begin{key}{easyfig}{caption}
 %    \begin{macrocode}
 \define@key{easyfig}{caption}{%
-    \def\easyfig@caption##1{\caption{#1}\easyfig@label{##1}}%
+    \def\easyfig@caption##1{\expandafter\caption\easyfig@shortcaption{#1}\easyfig@label{##1}}%
     \let\easyfig@captionabove\@gobble
+}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{easyfig}{shortcaption}
+%    \begin{macrocode}
+\define@key{easyfig}{shortcaption}{%
+    \def\easyfig@shortcaption{[{#1}]}%
 }
 %    \end{macrocode}
 % \end{key}
@@ -61,7 +76,7 @@
         \@tempdima=\abovecaptionskip
         \abovecaptionskip=\belowcaptionskip
         \belowcaptionskip=\@tempdima
-        \caption{#1}%
+        \expandafter\caption\easyfig@shortcaption{#1}%
         \easyfig@label{##1}%
     }}%
 }
@@ -86,14 +101,85 @@
 %    \end{macrocode}
 % \end{key}
 %
+% \begin{key}{easyfig}{twocolumn}
 %    \begin{macrocode}
-\easyfig
+\define@key{easyfig}{twocolumn}[true]{%
+    \begingroup
+    \def\@tempa{#1}%
+    \def\@tempb{true}%
+    \ifx\@tempa\@tempb
+        \endgroup
+        \def\easyfig@env{figure*}%
+    \else
+        \endgroup
+        \def\easyfig@env{figure}%
+    \fi
+}
 %    \end{macrocode}
+% \end{key}
 %
 % \begin{macro}{\Figure}
 %    \begin{macrocode}
-\newcommand{\Figure}[2][]{%
+\newcommand{\Figure}{%
     \begingroup
+    \@ifstar
+        {\def\easyfig@env{figure*}\@Figure}%
+        {\@Figure}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+\ifetex
+%    \end{macrocode}
+%
+% Efficient $\epsilon$-\TeX\ definition:
+%
+% \begin{macro}{\easyfig@expandonce}
+%    \begin{macrocode}
+\def\easyfig@expandonce#1{%
+    \expandafter\unexpanded\expandafter{#1}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\@Figure}
+%    \begin{macrocode}
+\newcommand{\@Figure}[2][]{%
+    \edef\@tempa{%
+        \noexpand\setkeys*{easyfig}{%
+            \easyfig@expandonce\easyfig@default,%
+            \unexpanded{#1},%
+            \easyfig@expandonce\easyfig@default@end
+        }%
+        \noexpand\begin{\easyfig@env}%
+        \ifx\easyfig@placement\@empty\else
+            [\easyfig@placement]%
+        \fi
+    }%
+    \@tempa
+    \easyfig@captionabove{#2}%
+    \edef\@tempa{\noexpand\begin{adjustbox}{\easyfig@expandonce\XKV@rm}}%
+    \@tempa
+        \includegraphics{#2}%
+    \end{adjustbox}%
+    \easyfig@caption{#2}%
+    \end{\easyfig@env}%
+    \endgroup
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+\else
+%    \end{macrocode}
+%
+% Fall-back definition for distributions which do not support $\epsilon$-\TeX:
+%
+% \begin{macro}{\@Figure}
+%    \begin{macrocode}
+\newcommand{\@Figure}[2][]{%
     \def\@tempa{\setkeys*{easyfig}}%
     \expandafter\toks@\expandafter{\easyfig@default,#1}%
     \expandafter\expandafter\expandafter\toks@
@@ -114,46 +200,6 @@
 %    \end{macrocode}
 % \end{macro}
 %
-%    \begin{macrocode}
-\else
-%    \end{macrocode}
-%
-% \begin{macro}{\easyfig@expandonce}
-%    \begin{macrocode}
-\def\easyfig@expandonce#1{%
-    \expandafter\unexpanded\expandafter{#1}%
-}
-%    \end{macrocode}
-% \end{macro}
-%
-%
-% \begin{macro}{\Figure}
-%    \begin{macrocode}
-\newcommand{\Figure}[2][]{%
-    \begingroup
-    \edef\@tempa{%
-        \noexpand\setkeys*{easyfig}{%
-            \easyfig@expandonce\easyfig@default,%
-            \unexpanded{#1},%
-            \easyfig@expandonce\easyfig@default@end
-        }%
-        \noexpand\begin{figure}%
-        \ifx\easyfig@placement\@empty\else
-            [\easyfig@placement]%
-        \fi
-    }%
-    \@tempa
-    \easyfig@captionabove{#2}%
-    \edef\@tempa{\noexpand\begin{adjustbox}{\easyfig@expandonce\XKV@rm}}%
-    \@tempa
-        \includegraphics{#2}%
-    \end{adjustbox}%
-    \easyfig@caption{#2}%
-    \end{figure}%
-    \endgroup
-}
-%    \end{macrocode}
-% \end{macro}
 %
 %    \begin{macrocode}
 \fi
