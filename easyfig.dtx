@@ -24,12 +24,12 @@
 %<*driver>
 \ProvidesFile{easyfig.dtx}[%
 %<=*DATE>
-    <+date+>
+    2011/10/31
 %<=/DATE>
 %<=*VERSION>
-    <+version+>
+    v1.0
 %<=/VERSION>
-    <+description+>]
+    Easily include images as figures]
 \documentclass{ydoc}
 \GetFileInfo{easyfig.dtx}
 \usepackage{easyfig}[\filedate]
@@ -77,11 +77,109 @@
 % \maketitle
 %
 % \begin{abstract}\noindent
-% <+abstract+>
+% This package aims to simplify the most common usage of \env{figure} environments
+% to include a single image with a caption and label.
 % \end{abstract}
 %
 % \section{Introduction}
-% <++>
+% A very high percentage of all \LaTeX\ figures aim to simply display a simple image with a caption and label.
+% A common way to code this is:
+% \begin{lstlisting}[gobble=4]
+%   \begin{figure}
+%      \centering
+%      \includegraphics[<options>]{<filename>}
+%      \caption{<caption text>}
+%      \label{<label>}
+%   \end{figure}
+% \end{lstlisting}
+%
+% This package provides an easy and short way to include figures like this. At the moment only single image figures
+% are supported but it is planned to also support common 1x2 and 2x1 figures in future releases.
+%
+% \section{Dependecies}
+% This package uses the following packages: \pkg{xkeyval}, \pkg{adjustbox} (which uses \pkg{graphicx}) and \pkg{ifetex}.
+%
+% \section{Usage}
+% \subsection*{Macros}
+% \DescribeMacro\Figure[<key=value pairs>]{<image filename>}
+% \DescribeMacro\Figure*[<key=value pairs>]{<image filename>}
+% The macro creates a \env{figure} environment where the given image file is included using \Macro\includegraphics wrapped in an \env{adjustbox} environment.
+% By default the image is centered and all keys which are not known by \Macro\Figure are passed to the internal \env{adjustbox} environment. This accepts all normal
+% \Macro\includegraphics keys as well as many more. The starred version uses the \env{figure*} environment instead which will insert the figure over both columns in \opt{twocolumn} mode.
+%
+% \DescribeMacro\easyfigdefault{<key=value pairs (before)>}
+% \DescribeMacro\easyfigdefault*{<key=value pairs (after)>}
+% Defines a list of key/value pairs which should be used by default. The normal version adds the pairs before the one
+% given with the optional argument of \Macro\Figure, while the starred version adds them after these.
+% If these macros are used more then once the old default settings are overwritten.
+% This feature is similar to \Macro\adjustboxset from the used \pkg{adjustbox} package, but the keys are only affecting \Macro\Figure macros and do not stack.
+% By default the \emph{before} key list is empty and the \emph{after} list is set to \Key{center} which centers the image around the \Macro\linewidth, after any other
+% transformation is applied.
+%
+%
+% \subsection*{Keys}
+% The following keys exist to control the elements of the figure. All other keys are passed to the inner \env{adjustbox} environment from the \pkg{adjustbox} package.
+%
+% \DescribeKey{caption}'='<caption>
+% Sets the \Macro\caption of the figure.
+%
+% \DescribeKey{captionabove}'='<caption>
+% Sets the \Macro\caption of the figure which is placed above the figure instead of the default placement below it.
+%
+% \DescribeKey{shortcaption}'='<short caption>
+% Sets the short version of the caption, i.e. the optional argument of \Macro\caption, used for the table-of-figures.
+% This key only has an effect if either \Key{caption} or \Key{captionabove} is used as well. However, the order of keys is not meaningful.
+%
+% \DescribeKey{label}'='<label>
+% Sets the \Macro\label of the figure. The order of this key and \Key{caption} or \Key{captionabove} is not meaningful.
+% If the figure has a caption but this key is not used, a default label `\MacroArgs'fig:'<image filename>\relax' is used instead.
+%
+% \DescribeKey{placement}'='<placement characters>
+% This key defines the requested placement of the figure. The value is then passed to the optional argument of \env{figure} or \env{figure*}.
+% Valid positioning characters are `|p|' (page), `|t|' (top), `|b|' (bottom), `|h|' (here) and `|!|' (force) and any additional characters defined by packages (like `|H|').
+%
+% \DescribeKey{twocolumn}
+% \DescribeKey{twocolumn}'=true|false'
+% This boolean key will use the \env{figure*} environment which make the figure span over both columns in a \opt{twocolumn} document. It has the same effect as using \Macro\Figure*, but allows
+% to switch between this two modes for all figures using \Macro\easyfigdefault. When used without a value `|true|' is assumed.
+% Any other value as `|true|' switches to one-column mode, even if \Macro\Figure* was used.
+%
+% \subsection*{Notable \pkg{adjustbox} Keys}
+% The following keys are mentioned here because they are might be often used for images inside figures. Please see the \pkg{adjustbox} manual for further details and keys.
+% In addition all \Macro\includegraphics keys as mentioned in the \href{http://www.ctan.org/pkg/grfguide}{grfguide} can of course be used.
+%
+% \DescribeKey{center}'='<length>
+% \DescribeKey{left}'='<length>
+% \DescribeKey{right}'='<length>
+% Aligns the image at the center or to the left or right. The \emph{optional} length defines the final width in with the image is aligned. By default the current \Macro\linewidth is used, which 
+% inside figures is normally identical to the \Macro\textwidth. If the image is wider than the given width it will overlap accordantly, i.e. on both sites, on the right or on the left, respectively.
+% As mentioned above by default \Key{center} is applied to all figures. This replaces the normally used \Macro\centering.
+%
+% \DescribeKey{width}'='<length>
+% \DescribeKey{height}'='<length>
+% \DescribeKey{totalheight}'='<length>
+% \DescribeKey{min width}'='<length>
+% \DescribeKey{min height}'='<length>
+% \DescribeKey{min size}'='{<length>}{<length>}
+% \DescribeKey{max width}'='<length>
+% \DescribeKey{max height}'='<length>
+% \DescribeKey{max size}'='{<length>}{<length>}
+% Can be used to set the nominal/minimal/maximum width and height of the image.
+%
+% \DescribeKey{frame}
+% \DescribeKey{frame}'='<length>
+% Adds a tight frame around the image.
+%
+% \DescribeKey{fbox}
+% \DescribeKey{fbox}'='<length>
+% \DescribeKey{fbox}'='<length>~<sep>
+% Adds a frame around the image.
+%
+% \DescribeKey{margin}'='<all sites>
+% \DescribeKey{margin}'='<left/right>~<top/bottom>
+% \DescribeKey{margin}'='<llx>~<lly>~<urx>~<ury>
+% This key can be used to add a margin (white space) around the image.
+%
 %
 % \StopEventually{}
 % \clearpage
