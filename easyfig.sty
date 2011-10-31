@@ -1,22 +1,60 @@
+%    \begin{macrocode}
+%<!COPYRIGHT>
+\ProvidesPackage{easyfig}[%
+%<!DATE>
+%<!VERSION>
+%<*DRIVER>
+    2099/01/01 develop
+%</DRIVER>
+    Easy way to include figures]
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 \RequirePackage{adjustbox}
 \RequirePackage{xkeyval}
-
-
+\RequirePackage{ifetex}
 \let\easyfig@caption\@gobble
 \let\easyfig@captionabove\@gobble
 \let\easyfig@placement\@empty
-
+\let\easyfig@default\@empty
+\let\easyfig@default@end\@empty
+%    \end{macrocode}
+%
+% \begin{macro}{\easyfigdefault}
+%    \begin{macrocode}
+\newcommand*{\easyfigdefault}{%
+    \@ifstar
+        {\def\easyfig@default@end}%
+        {\def\easyfig@default}%
+}
+%    \end{macrocode}
+% end{macro}
+%
+%
+% \begin{macro}{\easyfig@label}
+%    \begin{macrocode}
 \def\easyfig@label#1{%
     \@ifundefined {easyfig@r@fig:#1}{%
         \label{fig:#1}%
         \global\@namedef{easyfig@r@fig:#1}{}%
     }{}%
 }
-
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{key}{easyfig}{caption}
+%    \begin{macrocode}
 \define@key{easyfig}{caption}{%
     \def\easyfig@caption##1{\caption{#1}\easyfig@label{##1}}%
     \let\easyfig@captionabove\@gobble
 }
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{easyfig}{captionabove}
+%    \begin{macrocode}
 \define@key{easyfig}{captionabove}{%
     \let\easyfig@caption\@gobble
     \def\easyfig@captionabove##1{{%
@@ -27,16 +65,40 @@
         \easyfig@label{##1}%
     }}%
 }
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{easyfig}{label}
+%    \begin{macrocode}
 \define@key{easyfig}{label}{%
     \def\easyfig@label##1{\label{#1}}%
 }
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{easyfig}{placement}
+%    \begin{macrocode}
 \define@key{easyfig}{placement}{%
     \def\easyfig@placement{[#1]}%
 }
-
+%    \end{macrocode}
+% \end{key}
+%
+%    \begin{macrocode}
+\easyfig
+%    \end{macrocode}
+%
+% \begin{macro}{\Figure}
+%    \begin{macrocode}
 \newcommand{\Figure}[2][]{%
     \begingroup
-    \setkeys*{easyfig}{#1}%
+    \def\@tempa{\setkeys*{easyfig}}%
+    \expandafter\toks@\expandafter{\easyfig@default,#1}%
+    \expandafter\expandafter\expandafter\toks@
+    \expandafter\expandafter\expandafter{\expandafter\the\expandafter\toks@\expandafter,\easyfig@default@end}%
+    \expandafter\@tempa\expandafter{\the\toks@}
     \def\@tempa{\begin{figure}}%
     \expandafter\@tempa\easyfig@placement
     \easyfig@captionabove{#2}%
@@ -49,5 +111,50 @@
     \end{figure}%
     \endgroup
 }
-
-
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+\else
+%    \end{macrocode}
+%
+% \begin{macro}{\easyfig@expandonce}
+%    \begin{macrocode}
+\def\easyfig@expandonce#1{%
+    \expandafter\unexpanded\expandafter{#1}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\Figure}
+%    \begin{macrocode}
+\newcommand{\Figure}[2][]{%
+    \begingroup
+    \edef\@tempa{%
+        \noexpand\setkeys*{easyfig}{%
+            \easyfig@expandonce\easyfig@default,%
+            \unexpanded{#1},%
+            \easyfig@expandonce\easyfig@default@end
+        }%
+        \noexpand\begin{figure}%
+        \ifx\easyfig@placement\@empty\else
+            [\easyfig@placement]%
+        \fi
+    }%
+    \@tempa
+    \easyfig@captionabove{#2}%
+    \edef\@tempa{\noexpand\begin{adjustbox}{\easyfig@expandonce\XKV@rm}}%
+    \@tempa
+        \includegraphics{#2}%
+    \end{adjustbox}%
+    \easyfig@caption{#2}%
+    \end{figure}%
+    \endgroup
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+\fi
+%    \end{macrocode}

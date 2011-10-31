@@ -1,0 +1,11 @@
+LaTeX package 'easyfig'
+~~~~~~~~~~~~~~~~~~~~~~~
+Copyright (c) 2011 by Martin Scharrer <martin@scharrer.me>
+WWW: http://latex.scharrer.me/
+CTAN: http://www.ctan.org/pkg/easyfig
+Code repository: https://bitbucket.org/martin_scharrer/easyfig
+
+Provides \Figure[<key=value pairs>]{<image filename>} to easily include
+an image as figure in the most common form. Caption and label
+can be set using the 'caption' and 'label' key. The label defaults
+to 'fig:<image filename>' if not used.
