@@ -33,9 +33,12 @@
 \documentclass{ydoc}
 \GetFileInfo{easyfig.dtx}
 \usepackage{easyfig}[\filedate]
+\usepackage{flafter}
 \EnableCrossrefs
 \CodelineIndex
 \RecordChanges
+\OnlyDescription
+\optionaloff
 \begin{document}
   \DocInput{\jobname.dtx}
   \PrintChanges
@@ -84,7 +87,7 @@
 % \section{Introduction}
 % A very high percentage of all \LaTeX\ figures aim to simply display a simple image with a caption and label.
 % A common way to code this is:
-% \begin{lstlisting}[gobble=4]
+% \begin{lstlisting}[gobble=4,numbers=none]
 %   \begin{figure}
 %      \centering
 %      \includegraphics[<options>]{<filename>}
@@ -96,8 +99,10 @@
 % This package provides an easy and short way to include figures like this. At the moment only single image figures
 % are supported but it is planned to also support common 1x2 and 2x1 figures in future releases.
 %
+% \iffalse
 % \section{Dependecies}
 % This package uses the following packages: \pkg{xkeyval}, \pkg{adjustbox} (which uses \pkg{graphicx}) and \pkg{ifetex}.
+% \fi
 %
 % \section{Usage}
 % \subsection*{Macros}
@@ -107,6 +112,18 @@
 % By default the image is centered and all keys which are not known by \Macro\Figure are passed to the internal \env{adjustbox} environment. This accepts all normal
 % \Macro\includegraphics keys as well as many more. The starred version uses the \env{figure*} environment instead which will insert the figure over both columns in \opt{twocolumn} mode.
 %
+% \noindent
+% Usually this macro is used as follows:\nopagebreak
+% \begingroup
+% \leftmargin=0pt
+% \rightmargin=0pt
+% \begin{macroquote}
+%   \Figure['caption='{My caption},label=fig:mypic]{myimage}\\
+%   \Figure['caption='{My caption}]{myimage}\\
+%   \Figure['caption='{My caption},label=fig:mypic,placement=ht]{myimage}
+% \end{macroquote}
+% \endgroup
+%
 % \DescribeMacro\easyfigdefault{<key=value pairs (before)>}
 % \DescribeMacro\easyfigdefault*{<key=value pairs (after)>}
 % Defines a list of key/value pairs which should be used by default. The normal version adds the pairs before the one
@@ -114,7 +131,7 @@
 % If these macros are used more then once the old default settings are overwritten.
 % This feature is similar to \Macro\adjustboxset from the used \pkg{adjustbox} package, but the keys are only affecting \Macro\Figure macros and do not stack.
 % By default the \emph{before} key list is empty and the \emph{after} list is set to \Key{center} which centers the image around the \Macro\linewidth, after any other
-% transformation is applied.
+% transformation is applied. The default centering can be deleted using \Macro\easyfigdefault*{}.
 %
 %
 % \subsection*{Keys}
@@ -180,6 +197,26 @@
 % \DescribeKey{margin}'='<llx>~<lly>~<urx>~<ury>
 % This key can be used to add a margin (white space) around the image.
 %
+%
+% \section{Examples}
+%
+% \subsubsection{Simple figure with an image and caption, automated label}
+% A default label `|fig:tiger|' is used here.
+% \par\smallskip\noindent
+% \Macro\Figure['width=5cm,caption={A tiger}']{tiger}
+% \Figure[width=5cm,caption={A tiger}]{tiger}
+%
+% \subsubsection{Simple figure with an image and caption, manual label}
+% Normal usage with a manual label.
+% \par\smallskip\noindent
+% \Macro\Figure['width=5cm,caption={Second tiger},label=fig:mytiger']{tiger}
+% \Figure[width=5cm,caption={Second tiger},label=fig:mytiger]{tiger}
+%
+% \subsubsection{Usage of other keys}
+% Adds a frame around the image which is rotated a little.
+% \par\smallskip\noindent
+% \Macro\Figure['width=5cm,angle=10,caption={Another tiger},frame']{tiger}
+% \Figure[width=5cm,angle=10,caption={Another tiger},frame]{tiger}
 %
 % \StopEventually{}
 % \clearpage
