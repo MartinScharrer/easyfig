@@ -201,22 +201,23 @@
 % \section{Examples}
 %
 % \subsubsection{Simple figure with an image and caption, automated label}
-% A default label `|fig:tiger|' is used here.
+% A default label `|fig:image|' is used here.
 % \par\smallskip\noindent
-% \Macro\Figure['width=5cm,caption={A tiger}']{tiger}
-% \Figure[width=5cm,caption={A tiger}]{tiger}
+% \Macro\Figure['width=5cm,caption={An image}']{image}
+% \Figure[width=5cm,caption={An image}]{image}
 %
 % \subsubsection{Simple figure with an image and caption, manual label}
 % Normal usage with a manual label.
 % \par\smallskip\noindent
-% \Macro\Figure['width=5cm,caption={Second tiger},label=fig:mytiger']{tiger}
-% \Figure[width=5cm,caption={Second tiger},label=fig:mytiger]{tiger}
+% \Macro\Figure['width=5cm,caption={Second image},label=fig:myimage']{image}
+% \Figure[width=5cm,caption={Second image},label=fig:myimage]{image}
 %
 % \subsubsection{Usage of other keys}
 % Adds a frame around the image which is rotated a little.
+% The placement is fixed to top or bottom.
 % \par\smallskip\noindent
-% \Macro\Figure['width=5cm,angle=10,caption={Another tiger},frame']{tiger}
-% \Figure[width=5cm,angle=10,caption={Another tiger},frame]{tiger}
+% \Macro\Figure['width=5cm,angle=10,position=tb,caption={Another image},frame']{image}
+% \Figure[width=5cm,angle=10,placement=tb,caption={Another image},frame]{image}
 %
 % \StopEventually{}
 % \clearpage
