@@ -153,10 +153,11 @@
             \unexpanded{#1},%
             \easyfig@expandonce\easyfig@default@end
         }%
+    }%
+    \@tempa
+    \edef\@tempa{%
         \noexpand\begin\easyfig@env%
-        \ifx\easyfig@placement\@empty\else
-            [\easyfig@placement]%
-        \fi
+        \easyfig@placement
     }%
     \@tempa
     \easyfig@captionabove{#2}%
@@ -185,7 +186,7 @@
     \expandafter\expandafter\expandafter\toks@
     \expandafter\expandafter\expandafter{\expandafter\the\expandafter\toks@\expandafter,\easyfig@default@end}%
     \expandafter\@tempa\expandafter{\the\toks@}
-    \edef\@tempa{\noexpand\begin{\easyfig@env}}%
+    \edef\@tempa{\noexpand\begin\easyfig@env}%
     \expandafter\@tempa\easyfig@placement
     \easyfig@captionabove{#2}%
     \def\@tempa{\begin{adjustbox}}%
