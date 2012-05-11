@@ -101,6 +101,28 @@
 %    \end{macrocode}
 % \end{key}
 %
+% \begin{key}{easyfig}{here}
+%    \begin{macrocode}
+\define@key{easyfig}{here}[]{%
+    \def\easyfig@env{{easyfighere}}%
+}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{environment}{easyfighere}
+%    \begin{macrocode}
+\newenvironment{easyfighere}{%
+    \trivlist
+    \def\@captype{figure}%
+    \item\relax
+}{%
+    \endtrivlist
+}
+%    \end{macrocode}
+% \end{environment}
+%
+%
 % \begin{key}{easyfig}{twocolumn}
 %    \begin{macrocode}
 \define@key{easyfig}{twocolumn}[true]{%
