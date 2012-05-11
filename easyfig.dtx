@@ -156,6 +156,10 @@
 % This key defines the requested placement of the figure. The value is then passed to the optional argument of \env{figure} or \env{figure*}.
 % Valid positioning characters are `|p|' (page), `|t|' (top), `|b|' (bottom), `|h|' (here) and `|!|' (force) and any additional characters defined by packages (like `|H|').
 %
+% \DescribeKey{here}
+% Using this key the figure is placed at the current position and not using a \env{figure} float. Any \Key{placement}
+% key will be ignored. Note that this key is overwritten by any following \Key{twocolumn} key.
+%
 % \DescribeKey{twocolumn}
 % \DescribeKey{twocolumn}'=true|false'
 % This boolean key will use the \env{figure*} environment which make the figure span over both columns in a \opt{twocolumn} document. It has the same effect as using \Macro\Figure*, but allows
