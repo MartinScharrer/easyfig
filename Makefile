@@ -1,6 +1,6 @@
 CONTRIBUTION  = easyfig
 NAME          = Martin Scharrer
-EMAIL         = martin@scharrer.me
+EMAIL         = martin@scharrer-scharrer.me
 DIRECTORY     = /macros/latex/contrib/${CONTRIBUTION}
 LICENSE       = free
 FREEVERSION   = lppl
