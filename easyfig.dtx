@@ -34,6 +34,8 @@
 \GetFileInfo{easyfig.dtx}
 \usepackage{easyfig}[\filedate]
 \usepackage{flafter}
+%\usepackage{mwe}
+\graphicspath{{example-}}
 \EnableCrossrefs
 \CodelineIndex
 \RecordChanges
@@ -205,19 +207,19 @@
 %
 % \section{Examples}
 %
-% \subsubsection{Simple figure with an image and caption, automated label}
+% \subsection{Simple figure with an image and caption, automated label}
 % A default label `|fig:image|' is used here.
 % \par\smallskip\noindent
 % \Macro\Figure['width=5cm,caption={An image}']{image}
 % \Figure[width=5cm,caption={An image}]{image}
 %
-% \subsubsection{Simple figure with an image and caption, manual label}
+% \subsection{Simple figure with an image and caption, manual label}
 % Normal usage with a manual label.
 % \par\smallskip\noindent
 % \Macro\Figure['width=5cm,caption={Second image},label=fig:myimage']{image}
 % \Figure[width=5cm,caption={Second image},label=fig:myimage]{image}
 %
-% \subsubsection{Usage of other keys}
+% \subsection{Usage of other keys}
 % Adds a frame around the image which is rotated a little.
 % The placement is fixed to top or bottom.
 % \par\smallskip\noindent
