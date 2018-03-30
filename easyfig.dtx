@@ -41,6 +41,8 @@
 \RecordChanges
 \OnlyDescription
 \optionaloff
+\def\textfraction{0.2}
+\def\bottomfraction{0.8}
 \begin{document}
   \DocInput{\jobname.dtx}
   \PrintChanges
@@ -205,26 +207,29 @@
 % This key can be used to add a margin (white space) around the image.
 %
 %
+% \clearpage
 % \section{Examples}
 %
 % \subsection{Simple figure with an image and caption, automated label}
 % A default label `|fig:image|' is used here.
 % \par\smallskip\noindent
-% \Macro\Figure['width=5cm,caption={An image}']{image}
-% \Figure[width=5cm,caption={An image}]{image}
+% \Macro\Figure['width=10cm,caption={An image}']{image}
+% \Figure[width=10cm,caption={An image}]{image}
 %
+% \clearpage
 % \subsection{Simple figure with an image and caption, manual label}
 % Normal usage with a manual label.
 % \par\smallskip\noindent
-% \Macro\Figure['width=5cm,caption={Second image},label=fig:myimage']{image}
-% \Figure[width=5cm,caption={Second image},label=fig:myimage]{image}
+% \Macro\Figure['width=10cm,caption={Second image},label=fig:myimage']{image}
+% \Figure[width=10cm,caption={Second image},label=fig:myimage]{image}
 %
+% \clearpage
 % \subsection{Usage of other keys}
 % Adds a frame around the image which is rotated a little.
 % The placement is fixed to top or bottom.
 % \par\smallskip\noindent
-% \Macro\Figure['width=5cm,angle=10,position=tb,caption={Another image},frame']{image}
-% \Figure[width=5cm,angle=10,placement=tb,caption={Another image},frame]{image}
+% \Macro\Figure['width=10cm,angle=10,position=tb,caption={Another image},frame']{image}
+% \Figure[width=10cm,angle=10,placement=tb,caption={Another image},frame]{image}
 %
 % \StopEventually{}
 % \clearpage
