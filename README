@@ -1,6 +1,6 @@
 LaTeX package 'easyfig'
 ~~~~~~~~~~~~~~~~~~~~~~~
-Copyright (c) 2011-2016 by Martin Scharrer <martin@scharrer-online.de>
+Copyright (c) 2011-2018 by Martin Scharrer <martin@scharrer-online.de>
 CTAN: http://www.ctan.org/pkg/easyfig
 Code repository: https://bitbucket.org/martin_scharrer/easyfig
 
@@ -11,4 +11,7 @@ to 'fig:<image filename>' if not used.
 
 The package uses the authors other package 'adjustbox' to center and image and to
 allow for easy further modifications.
+
+As 'adjustbox' now provides keys to turn images or other material into floats or 
+non-floats including captions this package has become quite redundant.
 
