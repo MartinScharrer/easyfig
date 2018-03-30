@@ -52,7 +52,7 @@ TDSFILES = ${LTXFILES} ${LTXDOCFILES} ${LTXSRCFILES} \
 
 BUILDDIR = build
 
-LATEXMK  = latexmk -pdf -pdflatex='ppdflatex -- -interaction=nonstopmode -shell-escape -synctex=1'
+LATEXMK  = latexmk -pdf -quiet
 ZIP      = zip -r
 WEBBROWSER = firefox
 GETVERSION = $(strip $(shell grep '=\*VERSION' -A1 ${MAINDTX} | tail -n1))
