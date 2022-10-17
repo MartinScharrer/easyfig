@@ -1,8 +1,8 @@
 LaTeX package 'easyfig'
 ~~~~~~~~~~~~~~~~~~~~~~~
-Copyright (c) 2011-2018 by Martin Scharrer <martin@scharrer-online.de>
+Copyright (c) 2011-2022-2022 by Martin Scharrer <martin.scharrer@web.de>
 CTAN: http://www.ctan.org/pkg/easyfig
-Code repository: https://bitbucket.org/martin_scharrer/easyfig
+Code repository: https://github.com/MartinScharrer/easyfig/
 
 Provides \Figure[<key=value pairs>]{<image filename>} to easily include
 an image as figure in the most common form (centered and with caption and label).
